@@ -7,23 +7,37 @@ import (
 )
 
 func Init() {
-  if !isGitInstalled() {
+  if !installFzF() {
     fmt.Println("======== INIT FAILED =========")
     return;
   }
 
+  fmt.Println("===== INIT SUCCESS ======")
+}
+
+func installFzF() bool {
+  if success := utils.CheckIfExists("fzf"); success {
+    fmt.Println("FzF already installed")
+    return true;
+  }
+
+  fmt.Println("Installing FzF...")
+  if !isGitInstalled() {
+    fmt.Println("Git Not Found")
+    return false;
+  }
+
   if !gitClone("https://github.com/junegunn/fzf.git", "~/.fzf") {
     fmt.Println("Unable to Clone FzF")
-    return;
+    return false;
   }
 
-  _, err := utils.RunScript("~/.fzf/install")
-
-  if err != nil {
+  if success := utils.RunScript("~/.fzf/install"); !success {
     fmt.Println("Unable to install FzF")
+    return false;
   }
 
-  fmt.Println("===== INIT SUCCESS ======")
+  return true;
 }
 
 func IsInitSuccess() bool {

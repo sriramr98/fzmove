@@ -7,7 +7,7 @@ import (
 )
 
 func isGitInstalled() bool {
-  cmd := exec.Command("git", "--version")
+  cmd := exec.Command("git", "version")
   out, err := cmd.Output()
 
   if err != nil {

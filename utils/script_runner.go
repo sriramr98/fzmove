@@ -2,9 +2,18 @@ package utils
 
 import "os/exec"
 
-func RunScript(scriptPath string) (string, error) {
-  cmd := exec.Command("sh", scriptPath)
-  out, err := cmd.Output()
+func RunScript(scriptPath string) bool {
+  return RunShellCommand("sh", scriptPath)
+}
 
-  return string(out), err
+func RunShellCommand(name string, params ...string) bool {
+  cmd := exec.Command(name, params...)
+  if _, err := cmd.Output(); err != nil {
+    return false
+  }
+  return true
+}
+
+func CheckIfExists(program string) bool {
+  return RunShellCommand("command", "-v", program)
 }
