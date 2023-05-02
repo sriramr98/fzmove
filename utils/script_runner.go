@@ -3,17 +3,28 @@ package utils
 import "os/exec"
 
 func RunScript(scriptPath string) bool {
-  return RunShellCommand("sh", scriptPath)
-}
-
-func RunShellCommand(name string, params ...string) bool {
-  cmd := exec.Command(name, params...)
-  if _, err := cmd.Output(); err != nil {
+  _, err := RunShellCommand("sh", scriptPath)
+  if err != nil {
     return false
-  }
+  } 
   return true
 }
 
+func RunShellCommand(name string, params ...string) (string, error) {
+  cmd := exec.Command(name, params...)
+  res, err := cmd.Output();   
+
+  if err != nil {
+    return "", err
+  }
+
+  return string(res), err
+}
+
 func CheckIfExists(program string) bool {
-  return RunShellCommand("command", "-v", program)
+  _, err := RunShellCommand("command", "-v", program)
+  if err != nil {
+    return false
+  }
+  return true
 }

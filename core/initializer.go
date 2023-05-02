@@ -41,7 +41,7 @@ func installFzF() bool {
 }
 
 func IsInitSuccess() bool {
-  return false
+  return true
 }
 
 

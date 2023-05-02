@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"gitub.com/sriramr98/fzmove/core"
@@ -27,7 +28,7 @@ var rootCmd = &cobra.Command{
       return;
     }
 
-    fmt.Println("Init Success .. Search to be Implemented");
+    fmt.Printf("Init Success .. Search to be Implemented on dirs %s", strings.Join(project_dirs, ","));
   },
 }
 
