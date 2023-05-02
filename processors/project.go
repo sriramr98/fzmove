@@ -17,7 +17,7 @@ func NewProjectProcessor() ProjectProcessor {
   return ProjectProcessor{}
 }
 
-func (p ProjectProcessor) process() error {
+func (p ProjectProcessor) Process() error {
   project_config, err := config.GetAndValidateConfig()
   if err != nil {
     return err
@@ -32,6 +32,7 @@ func (p ProjectProcessor) process() error {
     return err
   }
 
+  fmt.Printf("== Project Path %s", project_path)
   // Depending on selection and identified project type, open project
   project_type := identifyProjectType(project_path)
 
