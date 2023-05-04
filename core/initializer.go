@@ -3,61 +3,37 @@ package core
 import (
 	"fmt"
 	"log"
-	"os"
-	"path"
 
+	"gitub.com/sriramr98/fzmove/dependencies"
 	"gitub.com/sriramr98/fzmove/utils"
 )
 
 func Init() {
-  if !installFzF() {
-    fmt.Println("======== INIT FAILED =========")
-    return;
+
+  gitClient := utils.GitClient();
+
+  if !gitClient.IsInstalled() {
+    log.Fatal("Git Not Found. Please install git and rerun `fzmove init` to continue")
+  }
+
+  dependencies := dependencies.ALL_DEPENDENCIES
+
+  for _, dep := range dependencies {
+    name := dep.Name()
+    if dep.IsAlreadyInstalled() {
+      log.Printf("INFO: Dependency %s already installed\n", name)
+      continue;
+    }
+
+    if success := dep.Install(); !success {
+      log.Fatalf("ERROR: Unable to Install Dependency %s", name)
+    }
   }
 
   fmt.Println("===== INIT SUCCESS ======")
 }
 
-func installFzF() bool {
-  if success := utils.CheckIfExists("fzf"); success {
-    fmt.Println("FzF already installed")
-    return true;
-  }
-
-  fmt.Println("Installing FzF...")
-  if !isGitInstalled() {
-    fmt.Println("Git Not Found")
-    return false;
-  }
-
-  if success := installFzf(); !success {
-    log.Fatal("Unable to install FzF");
-    return false;
-  }
-  
-  return true;
-}
-
 func IsInitSuccess() bool {
   return true
-}
-
-func installFzf() bool {
-  homeDirPath, err := os.UserHomeDir()
-  if err != nil {
-    log.Fatal("Home Dir not found ", err)
-  }
-
-  if !gitClone("https://github.com/junegunn/fzf.git", path.Join(homeDirPath, ".fzf")) {
-    fmt.Println("Unable to Clone FzF")
-    return false;
-  }
-
-  if success := utils.RunScript(path.Join(homeDirPath, ".fzf", "install")); !success {
-    fmt.Println("Unable to install FzF")
-    return false;
-  }
-
-  return true;
 }
 

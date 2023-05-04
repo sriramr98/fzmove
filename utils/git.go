@@ -1,4 +1,4 @@
-package core
+package utils
 
 import (
 	"fmt"
@@ -7,7 +7,10 @@ import (
 	"os/exec"
 )
 
-func isGitInstalled() bool {
+type Git struct {}
+
+func (g Git) IsInstalled() bool {
+
   cmd := exec.Command("git", "version")
   out, err := cmd.Output()
 
@@ -20,7 +23,7 @@ func isGitInstalled() bool {
   return true;
 }
 
-func gitClone(repoUrl string, destPath string) bool {
+func (g Git) Clone(repoUrl string, destPath string) bool {
   cmd := exec.Command("git" , "clone", repoUrl, destPath)
   cmd.Stdout = os.Stdout
   if err := cmd.Run(); err != nil {
@@ -28,5 +31,15 @@ func gitClone(repoUrl string, destPath string) bool {
   }
 
   return true
+
 }
 
+var git *Git = nil;
+
+func GitClient() Git {
+  if git == nil {
+    git = &Git{}
+  }
+
+  return *git
+}
