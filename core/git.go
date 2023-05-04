@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 )
 
@@ -21,9 +22,9 @@ func isGitInstalled() bool {
 
 func gitClone(repoUrl string, destPath string) bool {
   cmd := exec.Command("git" , "clone", repoUrl, destPath)
-  if _, err := cmd.Output(); err != nil {
+  cmd.Stdout = os.Stdout
+  if err := cmd.Run(); err != nil {
     log.Fatalf("Unable to clone repo %s, error %s", repoUrl, err);
-    return false
   }
 
   return true
