@@ -1,7 +1,7 @@
 package dependencies
 type Dependency interface {
 
-  IsAlreadyInstalled() bool
+  IsInstalled() bool
   Install() bool
   Name() string
 

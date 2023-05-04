@@ -20,7 +20,7 @@ func Init() {
 
   for _, dep := range dependencies {
     name := dep.Name()
-    if dep.IsAlreadyInstalled() {
+    if dep.IsInstalled() {
       log.Printf("INFO: Dependency %s already installed\n", name)
       continue;
     }

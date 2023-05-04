@@ -11,7 +11,7 @@ import (
 type FzF struct {
 }
 
-func (f FzF) IsAlreadyInstalled() bool {
+func (f FzF) IsInstalled() bool {
   return utils.CheckIfExists("fzf")
 }
 
