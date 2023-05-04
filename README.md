@@ -43,4 +43,21 @@ fzmove all - Scans all files and folders in the system
   }
 }
 ```
-    
+ 
+
+---
+
+### Planned Feature List
+
+[x] Able to initialize all required dependencies
+[] Health check for all required dependencies
+[] Browse all directories / files with the option of browsing only directories or files
+[] Browse Projects with `.git` as Project Identifier
+[] Detect projects based on language quirks := pom.xml means java project, go.mod for golang project and so on [ If not possible, popup when user opens a project for the first time to ask for language]
+[] Configure each language with an application to open the project.
+[] Folder structure preview
+[] File preview with syntax highlighting
+[] Path bookmarks
+[] CD on steroids
+[] Open file on steroids
+[] Ability to open projects / directories with custom apps [ vim, emacs etc.. ]
