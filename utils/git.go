@@ -1,13 +1,17 @@
-package core
+package utils
 
 import (
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 )
 
-func isGitInstalled() bool {
-  cmd := exec.Command("git", "--version")
+type Git struct {}
+
+func (g Git) IsInstalled() bool {
+
+  cmd := exec.Command("git", "version")
   out, err := cmd.Output()
 
   if err != nil {
@@ -19,13 +23,23 @@ func isGitInstalled() bool {
   return true;
 }
 
-func gitClone(repoUrl string, destPath string) bool {
+func (g Git) Clone(repoUrl string, destPath string) bool {
   cmd := exec.Command("git" , "clone", repoUrl, destPath)
-  if _, err := cmd.Output(); err != nil {
+  cmd.Stdout = os.Stdout
+  if err := cmd.Run(); err != nil {
     log.Fatalf("Unable to clone repo %s, error %s", repoUrl, err);
-    return false
   }
 
   return true
+
 }
 
+var git *Git = nil;
+
+func GitClient() Git {
+  if git == nil {
+    git = &Git{}
+  }
+
+  return *git
+}

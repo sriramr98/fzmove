@@ -6,9 +6,9 @@ package cmd
 import (
 	"fmt"
 	"os"
-
 	"github.com/spf13/cobra"
 	"gitub.com/sriramr98/fzmove/core"
+	"gitub.com/sriramr98/fzmove/processors"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -27,7 +27,14 @@ var rootCmd = &cobra.Command{
       return;
     }
 
-    fmt.Println("Init Success .. Search to be Implemented");
+    processor := processors.NewProjectProcessor()
+
+    err := processor.Process()
+    
+    if err != nil {
+      panic(err)
+    }
+
   },
 }
 

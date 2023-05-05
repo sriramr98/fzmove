@@ -2,32 +2,38 @@ package core
 
 import (
 	"fmt"
+	"log"
 
+	"gitub.com/sriramr98/fzmove/dependencies"
 	"gitub.com/sriramr98/fzmove/utils"
 )
 
 func Init() {
-  if !isGitInstalled() {
-    fmt.Println("======== INIT FAILED =========")
-    return;
+
+  gitClient := utils.GitClient();
+
+  if !gitClient.IsInstalled() {
+    log.Fatal("Git Not Found. Please install git and rerun `fzmove init` to continue")
   }
 
-  if !gitClone("https://github.com/junegunn/fzf.git", "~/.fzf") {
-    fmt.Println("Unable to Clone FzF")
-    return;
-  }
+  dependencies := dependencies.ALL_DEPENDENCIES
 
-  _, err := utils.RunScript("~/.fzf/install")
+  for _, dep := range dependencies {
+    name := dep.Name()
+    if dep.IsInstalled() {
+      log.Printf("INFO: Dependency %s already installed\n", name)
+      continue;
+    }
 
-  if err != nil {
-    fmt.Println("Unable to install FzF")
+    if success := dep.Install(); !success {
+      log.Fatalf("ERROR: Unable to Install Dependency %s", name)
+    }
   }
 
   fmt.Println("===== INIT SUCCESS ======")
 }
 
 func IsInitSuccess() bool {
-  return false
+  return true
 }
-
 
